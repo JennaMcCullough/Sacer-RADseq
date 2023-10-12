@@ -1,2 +1,2 @@
 # Sacer-RADseq
-Code used for Todiramphus sacer Radseq project
+This repository has code used for Todiramphus sacer Radseq project
