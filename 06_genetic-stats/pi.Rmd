@@ -1,0 +1,100 @@
+---
+title: "sacer63-genetic-diversity"
+author: "Jenna McCullough"
+date: "8/172023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(scales)
+```
+
+## Making a heterozygosity/pi dot chart 
+This is following Devon DeRaad's scripts associated with DeRaad et al. 2023, Molecular Ecol. 
+https://onlinelibrary.wiley.com/doi/10.1111/mec.17080
+
+
+I have two datasets that I want to investigate, both using the sacer63 dataset.
+
+1. **Subspecies**
+
+2. **Individual**: all the samples from sacer63 are considered their own population for individual heterozygosity estimates 
+
+```{r reading in output files}
+
+#echo "GETTING GENETIC DIVERSITY OF SACER 63 subspecies"
+#sacer63_subspecies.txt is a popmap that has all samples in their subspecies group  to get taxon level pi estimates.
+#populations -P $src/populations_out/sacer63 -M $src/popmaps/sacer63_subspecies.txt --fstats -O $src/populations_out/pop_sacer63-subspeciesLumped -t 4
+
+#echo "GETTING GENETIC DIVERSITY OF SACER 63 INDIVIDUALS"
+# sacer67-individual.txt is a popmap that assigns samples to their own population to assess per individual heterozygosity estimates
+#populations -P $src/populations_out/sacer63 -M $src/popmaps/sacer63-individual.txt -O $src/populations_out/pop_sacer63-individual -t 4
+
+# then i had to separate the following tables into a "variant" and "all" file from the original. I also had to remove the top header and the # from the header line
+
+#all subspecies 
+pi.pops <-read.table("01_subspecies/populations.sumstats_summary-all.csv", header=T, sep=',')
+popsmap<- read.table("sacer63-subspecies.txt", header=T, sep='\t')
+
+# per sample 
+pi.sample<-read.table("02_individual/populations.sumstats_summary-all.tsv", header=T, sep='\t')
+samplemap <- read.table("sacer63-individuals.txt", header=T, sep='\t')
+
+```
+
+
+## all samples grouped by different popmaps
+These following plots are the per sample run but plotted in a way that plots the individual
+sample grouped by different metrics to explore patterns:
+
+## grouped by subspecies
+```{r pi sample1, echo=FALSE}
+plotting.dftaxamap<-data.frame(sample=pi.sample$Pop.ID, het=pi.sample$Obs_Het, species=popsmap$pop)
+#plot heterozygosity violin plots by viti 2 pop
+ggplot(plotting.dftaxamap, aes(x=species, y=het))+ 
+  #geom_violin(trim=FALSE)+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = 1, alpha=.75)+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+
+
+## Now I will add the population level estimates of Pi overlaid on top of the individual estimates of heterozygosity. 
+Population levels of pi are on the right-hand side. The star is the pi value for the whole
+population as defined by the populations stacks module. All the single points are
+from when each sample was run as its own population. 
+
+I will add colors to these in illustrator because i'm a lazy coder. 
+
+```{r pi sample, echo=FALSE}
+
+plotting.df<-data.frame(sample=pi.sample$Pop.ID, het=pi.sample$Obs_Het, species=popsmap$pop)
+pi.pops$species<-pi.pops$Pop.ID
+#plot heterozygosity violin plots
+het.plot <-ggplot(plotting.df, aes(x=species, y=het))+ 
+  #geom_violin(trim=FALSE)+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize = 1.9, alpha=0.75)+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1,size=12, face = "italic", color="black"),
+        axis.text.y = element_text(angle = 45, hjust = 1, size = 12),
+        legend.position = "none")+
+  geom_point(pi.pops, mapping=aes(y=Pi), pch=8, cex=3)+
+  labs(x="",y="heterozygosity")+
+  scale_y_continuous(labels = label_comma(), sec.axis = sec_axis(trans = (~.*1), labels = label_comma(),name="Pi"))
+plot(het.plot)
+ggsave("het.pi.plot.pdf", het.plot, width = 6.5,height = 3,units = "in")
+
+ggplot(plotting.df, aes(x=species, y=het))+ 
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+  
+
+
+```
+
+
+
