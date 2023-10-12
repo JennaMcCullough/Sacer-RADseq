@@ -10,4 +10,6 @@ Some analyses were run on the UNM Center for Advanced Research computing, which 
 1. 01_align: folder with a slurm that aligns demultiplexed reads to Mariana Kingfisher reference genome and generation of bam files using SAMtools
 2. 02_stacks: Stacks to build catalog of RAD loci and creation of VCF files for all samples and the 7 subsets. Includes a folder of the different population maps to use to create subsets 
 3. 03_SNPfiltr: R code for SNPFiltr for the full dataset and subsets. Use the population maps from step #2. The bottom of this file has instructions to get a whitelist of RAD loci to use for SVDquartets 
-5. 
+4. 04_Splitstree: code to convert vcf into distance matrix to be used as input into splitstree
+5. 05_PCAs: code, used in conjunction with downloaded vcf files from dryad, to produce the PCAs.
+6. 06_genetic-stats: code to produce Figure 2C.  
