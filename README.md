@@ -8,6 +8,6 @@ We created a dataset will all samples (n=63) and seven different subsets for PCA
 Some analyses were run on the UNM Center for Advanced Research computing, which requires a slurm submission script to the cluster and used a conda environment that had stacks, bwa, and samtools installed. Other code was run in R. Color editing for PCAs/admixture plots was done by hand in Adobe Illustrator.  
 
 1. 01_align: folder with a slurm that aligns demultiplexed reads to Mariana Kingfisher reference genome and generation of bam files using SAMtools
-3. 02_stacks: Stacks to build catalog of RAD loci and creation of VCF files for all samples and 7 subsets. Includes popmaps
-4. 03_SNPfiltr: R code for SNPFiltr for the full dataset and subsets
+2. 02_stacks: Stacks to build catalog of RAD loci and creation of VCF files for all samples and the 7 subsets. Includes a folder of the different population maps to use to create subsets 
+3. 03_SNPfiltr: R code for SNPFiltr for the full dataset and subsets. Use the population maps from step #2. The bottom of this file has instructions to get a whitelist of RAD loci to use for SVDquartets 
 5. 
