@@ -1,7 +1,7 @@
 # Sacer-RADseq
 Code used in McCullough et al. in review "Rapidly Radiating Clade of ‘Great Speciators’ Harbors Rampant Incomplete Lineage Sorting and Low Levels of Gene Flow (Aves: Todiramphus kingfishers)" 
 
-This repository has code for data processing and analyses. 
+This repository has code for data processing and most analyses. 
 See Dryad repository (link to include here when generated) for supplementary information and datasets. 
 
 We created a dataset will all samples (n=63) and seven different subsets for PCAs/ADMIXTURE etc. 
